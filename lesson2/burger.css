@@ -1,0 +1,44 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+h3,
+h4 {
+    text-align: center;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+button {
+    padding: 8px 35px;
+    background-color: #000000;
+    color: #ffffff;
+    border: 1px solid #000000;
+    outline: none;
+    border-radius: 5px;
+}
+
+button:hover {
+    color: #000000;
+    background-color: #ffffff;
+}
+
+div {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.on-click {
+    background-color: rgb(20, 196, 202);
+}
+
+.on-click:hover {
+    color: rgb(20, 196, 202);
+}
+
+#text {
+    margin-top: 15px;
+    text-align: center;
+}

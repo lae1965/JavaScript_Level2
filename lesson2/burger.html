@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Гамбургер</title>
+    <link rel="stylesheet" href="burger.css">
+</head>
+
+<body>
+    <h3>Гамбургер</h3>
+    <div class="size">
+        <button id="bt-0" onclick="clickButton(this)">Маленький</button>
+        <button id="bt-1" onclick="clickButton(this)">Большой</button>
+    </div>
+    <h4>Начинка</h4>
+    <div class="filling">
+        <button id="bt-2" onclick="clickButton(this)">С сыром</button>
+        <button id="bt-3" onclick="clickButton(this)">С салатом</button>
+        <button id="bt-4" onclick="clickButton(this)">С картофелем</button>
+    </div>
+    <h4>Дополнительно</h4>
+    <div class="additionally">
+        <button id="bt-5" onclick="clickButton(this)">С приправой</button>
+        <button id="bt-6" onclick="clickButton(this)">С майонезом</button>
+    </div>
+    <p id="text"></p>
+
+    <script>
+        const SIZE = 0, FILLING = 1, ADDITIONALLY = 2;
+        const hamburgerArr = [{
+            property: 'Маленький', price: 50, calories: 20
+        }, {
+            property: 'Большой', price: 100, calories: 40
+        }, {
+            property: 'С сыром', price: 10, calories: 20
+        }, {
+            property: 'С салатом', price: 20, calories: 5
+        }, {
+            property: 'С картофелем', price: 15, calories: 10
+        }, {
+            property: 'С приправой', price: 15, calories: 0
+        }, {
+            property: 'С майонезом', price: 20, calories: 5
+        }];
+
+        class Hamburger {
+            constructor(category, element) {
+                const hamburger = hamburgerArr[element.id.split('-')[1]];
+
+                this.category = category;
+                this.property = hamburger.property;
+                this.price = hamburger.price;
+                this.calories = hamburger.calories;
+            }
+        }
+
+        class HamburgerOrder {
+            constructor() {
+                this.hamburgerList = [];
+            }
+
+            addHamburger(category, element) {
+                if (this.hamburgerList.length == 0 && category != SIZE) {
+                    alert('Выберите сначала размер гамбургера!');
+                    return;
+                }
+
+                if (category == SIZE) {
+                    for (const item of this.hamburgerList) {
+                        if (item.category == SIZE) {
+                            let elem = element.parentElement.firstElementChild;
+                            while (elem.innerHTML != item.property) elem = element.nextElementSibling;
+                            this.delHamburger(elem, true);
+                            break;
+                        }
+                    }
+                }
+
+                this.hamburgerList.push(new Hamburger(category, element));
+                element.classList.add('on-click');
+            }
+
+            delHamburger(element, change) {
+                let num;
+
+                for (num = 0; num < this.hamburgerList.length; num++) {
+                    if (element.innerHTML == this.hamburgerList[num].property) break;
+                }
+
+                element.classList.remove('on-click');
+
+                if (this.hamburgerList[num].category == SIZE && !change) {
+                    this.hamburgerList = [];
+                    const classList = document.getElementsByClassName('on-click');
+                    const length = classList.length
+                    console.log(classList);
+                    for (let i = 0; i < length; i++) classList[0].classList.remove('on-click');
+                    return;
+                }
+
+                this.hamburgerList.splice(num, 1);
+            }
+
+            renderTotal() {
+                let size;
+                let filling = '';
+                let totalPrice = 0;
+                let totalCalories = 0;
+
+                for (const item of this.hamburgerList) {
+                    if (item.category == SIZE) size = item.property.toLowerCase();
+                    else filling += item.property.toLowerCase() + ', '
+                    totalPrice += item.price;
+                    totalCalories += item.calories;
+                }
+                filling = filling.substring(0, filling.length - 2);
+                const p = document.getElementById('text');
+                if (size == undefined) p.innerText = '';
+                else
+                    p.innerText = `Вы выбрали ${size} гамбургер ${filling}.\nСтоимость заказа - ${totalPrice} руб., калорийность - ${totalCalories} калорий.`
+            }
+        }
+
+        const order = new HamburgerOrder();
+
+        function clickButton(element) {
+            let category;
+
+            if (element.parentElement.classList.contains('size')) category = SIZE;
+            else if (element.parentElement.classList.contains('filling')) category = FILLING;
+            else category = ADDITIONALLY;
+
+            if (element.classList.contains('on-click')) order.delHamburger(element, false);
+            else order.addHamburger(category, element);
+
+            order.renderTotal();
+        }
+    </script>
+</body>
+
+</html>
