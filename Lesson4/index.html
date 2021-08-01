@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        input {
+            outline: none;
+        }
+
+        .no-valid {
+            border-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        str = "One: 'Hi Mary.' Two: 'Oh, hi.'\nOne: 'How are you doing?'\nTwo: 'I'm doing alright. How about you?'\nOne: 'Not too bad. The weather is great isn't it?'\nTwo: 'Yes. It's absolutely beautiful today.'\nOne: 'I wish it was like this more frequently.'\nTwo: 'Me too.'\nOne: 'So where are you going now?'\nTwo: 'I'm going to meet a friend of mine at the department store'\nOne: 'Going to do a little shopping?'\nTwo: 'Yeah, I have to buy some presents for my parents.'\nOne: 'What's the occasion?'\nTwo: 'It's their anniversary.'\nOne: 'That's great. Well, you better get going. You don't want to be late.'\nTwo: 'I'll see you next time.'\nOne: 'Sure.' Bye.'";
+
+        // Домашнее задание №1
+        let newStr = str.replace(/'/g, '"');
+        console.log(`Домашнее задание №1\n${newStr}\n\n`);
+
+        // Домашнее задание №2
+        newStr = str.replace(/^'|(\s)'|'(\s)|'$/g, '$1"$2');
+        console.log(`Домашнее задание №2\n${newStr}`);
+    </script>
+
+    <!-----Домашнее задание №3----->
+    <div class="form">
+        <input type="text" placeholder="Name" class="name">
+        <input type="text" placeholder="Phone" class="phone">
+        <input type="text" placeholder="Email" class="mail">
+        <input type="text" placeholder="Text" class="text">
+        <button class="button" onclick="validate()">Отправить</button>
+    </div>
+    <script>
+        function validate() {
+            validArr = [{
+                className: '.name',
+                regExp: /^[a-zа-яё]+$/i                             // Только буквы
+            }, {
+                className: '.phone',
+                regExp: /^\+7\([\d]{3}\)[\d]{3}-[\d]{4}$/           // Формат +7(000)000-0000
+            }, {
+                className: '.mail',
+                regExp: /^[\w]{1}[\w-\.]*@[\w-]+\.[a-z]{2,4}$/i     // Формат mmmmm@mmmm.mm c точками, тире, цифрами и символом '_' до @, то же самое, но без точек после собаки до точки и 2-4 буквами в конце   
+            }, {
+                className: '.text',
+                regExp: /^\S+$/                                     // Поле не должно быть пустым
+            }];
+            let err = false;
+            let errStr = 'Неверный формат формы:';
+            for (const element of validArr) {
+                let node = document.querySelector(element.className);
+                if (element.regExp.test(node.value)) node.classList.remove('no-valid');
+                else {
+                    node.classList.add('no-valid');
+                    err = true;
+                    errStr += ' ' + node.placeholder + ',';
+                }
+            }
+            if (err) alert(errStr.replace(/.$/, '!'));
+        }
+    </script>
+</body>
+
+</html>
