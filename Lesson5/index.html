@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Интернет-магазин</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div id="app">
+        <header>
+            <div class="logo">Интернет-магазин</div>
+            <div class="cart">
+                <form action="#" class="search-form">
+                    <input type="text" class="search-field" v-model="seachLine">
+                    <button class="btn-search" type="submit" @click.prevent="filterGood()">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+                <button class="btn-cart" @click="isVisibleCart = !isVisibleCart" type="button">Корзина</button>
+                <div class="cart-block" :class="{invisible: !isVisibleCart}">
+                    <div class="cart-item" v-for="item of cartsList" :data-id="item.id_product" :key="item.id_product">
+                        <div class="product-bio">
+                            <img :src="imgCatalog" alt="Some img">
+                        </div>
+                        <div class="product-desc">
+                            <p class="product-title">{{ item.product_name }}</p>
+                            <p class="product-quantity">{{ item.quantity }}</p>
+                            <p class="product-single-price">{{ item.price }}₽</p>
+                        </div>
+                        <div class="right-block">
+                            <p class="product-price">{{ item.price * item.quantity }}₽</p>
+                        </div>
+                    </div>
+                    <h3 v-if="!cartsList.length" style="text-align: center;">Корзина пуста</h3>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="products">
+                <div class="product-item" v-for="product of filtered" :data-id="product.id_product"
+                    :key="product.id_product">
+                    <img :src="imgCatalog" alt="Some img">
+                    <div class="desc">
+                        <h3>{{product.product_name}}</h3>
+                        <p>{{product.price}}₽</p>
+                        <button class="buy-btn" @click="addProduct(product)">Купить</button>
+                    </div>
+                </div>
+            </div>
+            <h1 v-if="!products.length" style="text-align: center;">Нет данных!!!</h1>
+            <h1 v-else-if="!filtered.length" style="text-align: center;">По Вашему запросу ничего не найдено</h1>
+        </main>
+    </div>
+    <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js"
+        integrity="sha384-0pzryjIRos8mFBWMzSSZApWtPl/5++eIfzYmTgBBmXYdhvxPc+XcFEk+zJwDgWbP"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
