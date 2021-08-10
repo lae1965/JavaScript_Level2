@@ -34,13 +34,13 @@
                             <p class="product-price">{{ item.price * item.quantity }}₽</p>
                         </div>
                     </div>
-                    <h3 v-if="cartsList.length == 0" style="text-align: center;">Ничего не выбрано!!!</h3>
+                    <h3 v-if="!cartsList.length" style="text-align: center;">Корзина пуста</h3>
                 </div>
             </div>
         </header>
         <main>
             <div class="products">
-                <div class="product-item" v-for="product of products" :data-id="product.id_product"
+                <div class="product-item" v-for="product of filtered" :data-id="product.id_product"
                     :key="product.id_product">
                     <img :src="imgCatalog" alt="Some img">
                     <div class="desc">
@@ -50,7 +50,8 @@
                     </div>
                 </div>
             </div>
-            <h1 v-if="products.length == 0" style="text-align: center;">Нет данных!!!</h1>
+            <h1 v-if="!products.length" style="text-align: center;">Нет данных!!!</h1>
+            <h1 v-else-if="!filtered.length" style="text-align: center;">По Вашему запросу ничего не найдено</h1>
         </main>
     </div>
     <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js"

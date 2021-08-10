@@ -6,6 +6,7 @@ const app = new Vue({
         catalogUrl: '/catalogData.json',
         cartUrl: '/getBasket.json',
         products: [],
+        filtered: [],
         cartsList: [],
         imgCatalog: 'https://via.placeholder.com/200x150',
         seachLine: '',
@@ -25,12 +26,7 @@ const app = new Vue({
         },
         filterGood() {
             const regExp = new RegExp(this.seachLine, 'i');
-            const filter = this.products.filter(product => regExp.test(product.product_name));
-            for (const item of this.products) {
-                const productBlock = document.querySelector(`.product-item[data-id="${item.id_product}"]`)
-                if (filter.includes(item)) productBlock.classList.remove('invisible');
-                else productBlock.classList.add('invisible');
-            }
+            this.filtered = this.products.filter(product => regExp.test(product.product_name));
         }
     },
     beforeCreated() {
@@ -41,6 +37,7 @@ const app = new Vue({
             .then(data => {
                 this.products = data;
                 //this.products = []; //Для проверки вывода сообщения об отсутствии товаров
+                this.filtered = this.products;
             });
         this.getJson(`${API + this.cartUrl}`)
             .then(data => {
